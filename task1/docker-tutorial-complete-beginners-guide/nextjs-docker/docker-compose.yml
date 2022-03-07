@@ -1,0 +1,40 @@
+version: "3.9" # optional since v1.27.0
+services:
+  # db:
+  #   container_name: postgres-comose
+  #   image: postgres
+  #   ports:
+  #     - 5432:5432
+  #   networks:
+  #     - compose-network
+  #   environment:
+  #     - POSTGRES_DB=docker-demo
+  #     - POSTGRES_PASSWORD=mysecretpassword
+  # cache:
+  #   container_name: redis-compose
+  #   image: redis
+  #   ports:
+  #     - 6379:6379
+  #   networks:
+  #     - compose-network
+  app:
+    container_name: nextjs-container
+    image: nextjs:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    networks:
+      - compose-network
+    # depends_on:
+    #   - db
+    #   - cache
+    environment:
+      - REDIS_HOST=redis-compose
+      - DB_HOST=postgres-compose
+      - MYNAME=12345678910iasdf
+networks:
+  compose-network:
+    name: new-example-network
